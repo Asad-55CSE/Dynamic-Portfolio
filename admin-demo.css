@@ -1,0 +1,116 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --p:  #7c6ef7;
+  --p2: #a89cf8;
+  --p3: #5a4ed4;
+  --p4: #ede9fe;
+  --acc:  #4ecdc4;
+  --acc2: #f7c948;
+  --bg:  #f4f2ff;
+  --bg2: #edeafd;
+  --bg3: #faf9ff;
+  --surf: #ffffff;
+  --sf2:  #f7f5ff;
+  --tx:  #1a1535;
+  --tx2: #4a4468;
+  --tx3: #8b84aa;
+  --bdr:  rgba(124, 110, 247, .15);
+  --sh:   0 8px 32px rgba(124, 110, 247, .12);
+  --sh2:  0 20px 60px rgba(124, 110, 247, .18);
+  --r:    16px;
+  --rs:   8px;
+  --rl:   24px;
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --font: 'Google Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg3);
+  color: var(--tx);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--p); border-radius: 3px; }
+
+.btn-p {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 12px 28px;
+  background: var(--p);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font);
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .3s var(--ease);
+}
+.btn-p:hover {
+  background: var(--p3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 110, 247, .4);
+}
+.btn-p.full { width: 100%; justify-content: center; }
+
+.btn-o {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 11px 26px;
+  background: transparent;
+  color: var(--p);
+  border: 2px solid var(--p);
+  border-radius: 100px;
+  font-family: var(--font);
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .3s var(--ease);
+}
+.btn-o:hover { background: var(--p4); }
+
+.demo-banner {
+  background: linear-gradient(90deg, #7c6ef7, #4ecdc4);
+  color: #fff;
+  text-align: center;
+  padding: .55rem 1rem;
+  font-size: .78rem;
+  font-weight: 600;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+.demo-banner code {
+  background: rgba(0, 0, 0, .25);
+  padding: 1px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+  letter-spacing: .03em;
+  font-size: .8rem;
+}
+.demo-badge {
+  background: rgba(255, 255, 255, .25);
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
