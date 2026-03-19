@@ -59,6 +59,86 @@
                 <button class="atab" data-tab="footer">🦶 Footer</button>
             </div>
 
+            <div class="tab-content active" id="tab-hero">
+
+                <div class="acard">
+                    <h3><i class="fas fa-heading"></i> Hero Text</h3>
+                    <div class="ag2">
+                        <div class="afg"><label>Greeting Line</label><input type="text" id="h-greeting"
+                                placeholder="HEY! I'm" /></div>
+                        <div class="afg"><label>Name</label><input type="text" id="h-name"
+                                placeholder="Hafiz Al Asad," /></div>
+                        <div class="afg"><label>Role / Title</label><input type="text" id="h-role"
+                                placeholder="Full Stack Developer" /></div>
+                        <div class="afg"><label>Tagline</label><input type="text" id="h-tagline" /></div>
+                        <div class="afg"><label>CV / Resume Link</label><input type="url" id="h-cv"
+                                placeholder="https://drive.google.com/..." /></div>
+                        <div class="afg"><label>GitHub URL</label><input type="url" id="h-github"
+                                placeholder="https://github.com/Asad-55CSE" /></div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="saveHeroTextBtn"><i class="fas fa-save"></i> Save Text</button>
+                    </div>
+                </div>
+
+                <div class="acard">
+                    <h3><i class="fas fa-user-circle"></i> Profile Photo</h3>
+                    <div class="ag2">
+                        <div class="afg">
+                            <label>Photo URL</label>
+                            <input type="url" id="h-photo-url" placeholder="https://..." />
+                            <img id="h-photo-preview" class="img-preview" src=""
+                                style="display:none;margin-top:.5rem" />
+                        </div>
+                        <div class="afg">
+                            <label>Upload Photo</label>
+                            <div class="upload-area" id="profilePhotoArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload (preview only)</p>
+                                <input type="file" id="profilePhotoFile" accept="image/*" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="saveHeroPhotoBtn"><i class="fas fa-save"></i> Save
+                            Photo</button>
+                    </div>
+                </div>
+
+                <div class="acard">
+                    <h3><i class="fas fa-tags"></i> Hero Badges</h3>
+                    <p class="section-note">These appear below the tagline (e.g. MERN Stack, CCNA). Use FontAwesome
+                        classes for icons.</p>
+                    <div class="sortable-list" id="badges-list"></div>
+                    <div class="ag2" style="margin-top:.5rem">
+                        <div class="afg"><label>Badge Text</label><input type="text" id="new-badge-text"
+                                placeholder="MERN Stack" /></div>
+                        <div class="afg"><label>Icon class</label><input type="text" id="new-badge-icon"
+                                placeholder="fab fa-react" /></div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="addBadgeBtn"><i class="fas fa-plus"></i> Add Badge</button>
+                        <button class="btn-p btn-sm" id="saveBadgesBtn"><i class="fas fa-save"></i> Save Badges</button>
+                    </div>
+                </div>
+
+                <div class="acard">
+                    <h3><i class="fas fa-chart-bar"></i> Stats</h3>
+                    <div class="sortable-list" id="stats-list"></div>
+                    <div class="ag3" style="margin-top:.5rem">
+                        <div class="afg"><label>Value</label><input type="number" id="new-stat-val" placeholder="5" />
+                        </div>
+                        <div class="afg"><label>Label</label><input type="text" id="new-stat-label"
+                                placeholder="Projects Done" /></div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="addStatBtn"><i class="fas fa-plus"></i> Add Stat</button>
+                        <button class="btn-p btn-sm" id="saveStatsBtn"><i class="fas fa-save"></i> Save Stats</button>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
     <div class="toast" id="toast"></div>

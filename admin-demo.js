@@ -195,3 +195,84 @@ function loadAll() {
   populateHero(); populateAbout(); populateSkills();
   populateProjects(); populateCerts(); populateContact();
 }
+
+function populateHero() {
+  setVal("h-greeting",  heroData.greeting     || "HEY! I'm");
+  setVal("h-name",      heroData.name         || "Hafiz Al Asad,");
+  setVal("h-role",      heroData.role         || "Full Stack Developer");
+  setVal("h-tagline",   heroData.tagline      || "");
+  setVal("h-cv",        heroData.cvLink       || "");
+  setVal("h-github",    heroData.githubLink   || "https://github.com/Asad-55CSE");
+  setVal("h-photo-url", heroData.profilePhoto || "");
+  if (heroData.profilePhoto) {
+    const p = document.getElementById("h-photo-preview");
+    p.src = heroData.profilePhoto; p.style.display = "block";
+  }
+  badgesData = heroData.badges || [{ icon: "fab fa-react", text: "MERN Stack" }, { icon: "fas fa-network-wired", text: "CCNA" }];
+  statsData  = heroData.stats  || [{ value: 4, label: "Years Learning" }, { value: 5, label: "Projects Done" }, { value: 15, label: "Tech Skills" }, { value: 2, label: "Certifications" }];
+  renderBadgesList(); renderStatsList();
+}
+
+function renderBadgesList() {
+  const list = document.getElementById("badges-list");
+  list.innerHTML = badgesData.map((b, i) => `
+    <div class="sort-item" data-idx="${i}">
+      <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+      <i class="${b.icon}" style="color:var(--p);font-size:1rem;width:20px;flex-shrink:0"></i>
+      <div class="si-info"><strong>${b.text}</strong><span>${b.icon}</span></div>
+      <div class="si-actions"><button class="btn-del" onclick="removeBadge(${i})"><i class="fas fa-trash"></i></button></div>
+    </div>`).join("");
+  makeSortable("badges-list");
+}
+window.removeBadge = i => { badgesData.splice(i, 1); renderBadgesList(); };
+
+document.getElementById("addBadgeBtn").onclick = () => {
+  const text = getVal("new-badge-text").trim(); const icon = getVal("new-badge-icon").trim();
+  if (!text) { toast("Enter badge text", "err"); return; }
+  badgesData.push({ text, icon: icon || "fas fa-star" }); renderBadgesList();
+  document.getElementById("new-badge-text").value = ""; document.getElementById("new-badge-icon").value = "";
+};
+document.getElementById("saveBadgesBtn").onclick = () => {
+  const items = [...document.getElementById("badges-list").querySelectorAll(".sort-item")];
+  heroData.badges = items.map(el => badgesData[parseInt(el.dataset.idx)]).filter(Boolean);
+  mockSet("hero", heroData); toast("✅ Badges saved!");
+};
+
+function renderStatsList() {
+  const list = document.getElementById("stats-list");
+  list.innerHTML = statsData.map((s, i) => `
+    <div class="sort-item" data-idx="${i}">
+      <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+      <div class="si-info"><strong>${s.value}+ ${s.label}</strong></div>
+      <div class="si-actions">
+        <input type="number" value="${s.value}" style="width:64px;padding:5px 8px;border:1px solid var(--bdr);border-radius:var(--rs);font-family:var(--font);font-size:.8rem;background:var(--sf2);color:var(--tx)"
+          onchange="statsData[${i}].value=+this.value"/>
+        <button class="btn-del" onclick="removeStat(${i})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join("");
+  makeSortable("stats-list");
+}
+window.removeStat = i => { statsData.splice(i, 1); renderStatsList(); };
+
+document.getElementById("addStatBtn").onclick = () => {
+  const val = parseInt(getVal("new-stat-val")) || 0; const lbl = getVal("new-stat-label").trim();
+  if (!lbl) { toast("Enter label", "err"); return; }
+  statsData.push({ value: val, label: lbl }); renderStatsList();
+  document.getElementById("new-stat-val").value = ""; document.getElementById("new-stat-label").value = "";
+};
+document.getElementById("saveStatsBtn").onclick = () => {
+  const items = [...document.getElementById("stats-list").querySelectorAll(".sort-item")];
+  heroData.stats = items.map(el => statsData[parseInt(el.dataset.idx)]).filter(Boolean);
+  mockSet("hero", heroData); toast("✅ Stats saved!");
+};
+document.getElementById("saveHeroTextBtn").onclick = () => {
+  Object.assign(heroData, {
+    greeting: getVal("h-greeting"), name: getVal("h-name"), role: getVal("h-role"),
+    tagline:  getVal("h-tagline"),  cvLink: getVal("h-cv"), githubLink: getVal("h-github")
+  });
+  mockSet("hero", heroData); toast("✅ Hero text saved!");
+};
+document.getElementById("saveHeroPhotoBtn").onclick = () => {
+  heroData.profilePhoto = getVal("h-photo-url");
+  mockSet("hero", heroData); toast("✅ Photo saved!");
+};
