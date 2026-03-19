@@ -311,6 +311,58 @@
 
             </div>
 
+            <div class="tab-content" id="tab-contact">
+
+                <div class="acard">
+                    <h3><i class="fas fa-address-card"></i> Contact Info</h3>
+                    <div class="afg" style="margin-bottom:1.2rem"><label>Intro Text</label><textarea
+                            id="contact-intro-admin" rows="2"></textarea></div>
+                    <p style="font-size:.85rem;font-weight:600;color:var(--tx);margin-bottom:.8rem">Contact Items
+                        (Email, Phone, Location)</p>
+                    <div id="contact-items-admin"></div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="saveContactBtn"><i class="fas fa-save"></i> Save Contact
+                            Info</button>
+                    </div>
+                </div>
+
+                <div class="acard">
+                    <h3><i class="fas fa-share-alt"></i> Social Links</h3>
+                    <p class="section-note">These icons appear below the contact items. Use FontAwesome class for the
+                        icon.</p>
+                    <div id="social-items-admin"></div>
+                    <hr style="margin:1rem 0;border:none;border-top:1px solid var(--bdr)" />
+                    <p style="font-size:.82rem;font-weight:600;color:var(--tx2);margin-bottom:.8rem">Add New Social Link
+                    </p>
+                    <div class="ag2">
+                        <div class="afg"><label>Icon class</label><input type="text" id="new-social-icon"
+                                placeholder="fab fa-linkedin-in" /></div>
+                        <div class="afg"><label>URL</label><input type="url" id="new-social-href"
+                                placeholder="https://linkedin.com/in/..." /></div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="addSocialBtn"><i class="fas fa-plus"></i> Add Social</button>
+                        <button class="btn-p btn-sm" id="saveSocialsBtn"><i class="fas fa-save"></i> Save
+                            Socials</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="tab-content" id="tab-footer">
+                <div class="acard">
+                    <h3><i class="fas fa-shoe-prints"></i> Footer Content</h3>
+                    <div class="ag2">
+                        <div class="afg"><label>Tagline (under logo)</label><input type="text" id="footer-tagline-admin"
+                                placeholder="Full Stack Developer · CCNA Certified" /></div>
+                        <div class="afg"><label>Copyright Text</label><input type="text" id="footer-copy-admin"
+                                placeholder="© 2025 Hafiz Al Asad..." /></div>
+                    </div>
+                    <div class="btn-row"><button class="btn-p btn-sm" id="saveFooterBtn"><i class="fas fa-save"></i>
+                            Save Footer</button></div>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="toast" id="toast"></div>

@@ -573,3 +573,63 @@ window.deleteCert = (id, i) => {
     certsData.splice(i, 1);
     populateCerts(); toast("🗑️ Deleted");
 };
+
+function populateContact() {
+    setVal("contact-intro-admin", contactData.intro || "");
+    const items = contactData.items || [];
+    socialsData = [...(contactData.socials || [])];
+    document.getElementById("contact-items-admin").innerHTML = items.map((it, i) => `
+    <div class="inline-row">
+      <div class="afg" style="min-width:130px"><label>Icon class</label><input type="text"  id="ci-icon-${i}"  value="${it.icon || ''}"/></div>
+      <div class="afg" style="min-width:90px" ><label>Label</label>     <input type="text"  id="ci-label-${i}" value="${it.label || ''}"/></div>
+      <div class="afg" style="min-width:160px"><label>Value</label>     <input type="text"  id="ci-value-${i}" value="${it.value || ''}"/></div>
+      <div class="afg" style="flex:1"         ><label>Link (href)</label><input type="text" id="ci-href-${i}"  value="${it.href || ''}"/></div>
+    </div>`).join("");
+    renderSocialsList();
+}
+
+function renderSocialsList() {
+    document.getElementById("social-items-admin").innerHTML = socialsData.map((s, i) => `
+    <div class="inline-row">
+      <div class="afg" style="min-width:160px"><label>Icon class</label><input type="text" id="si-icon-${i}" value="${s.icon || ''}"/></div>
+      <div class="afg" style="flex:1"><label>URL</label><input type="url" id="si-href-${i}" value="${s.href || ''}"/></div>
+      <button class="btn-del" style="align-self:flex-end;margin-bottom:0" onclick="removeSocial(${i})"><i class="fas fa-trash"></i></button>
+    </div>`).join("");
+}
+window.removeSocial = i => { socialsData.splice(i, 1); renderSocialsList(); };
+
+document.getElementById("addSocialBtn").onclick = () => {
+    const icon = getVal("new-social-icon").trim(); const href = getVal("new-social-href").trim();
+    if (!icon || !href) { toast("Enter icon and URL", "err"); return; }
+    socialsData.push({ icon, href }); renderSocialsList();
+    document.getElementById("new-social-icon").value = ""; document.getElementById("new-social-href").value = "";
+};
+
+document.getElementById("saveContactBtn").onclick = () => {
+    const items = contactData.items || [];
+    items.forEach((_, i) => {
+        items[i] = {
+            icon: getVal(`ci-icon-${i}`), label: getVal(`ci-label-${i}`),
+            value: getVal(`ci-value-${i}`), href: getVal(`ci-href-${i}`)
+        };
+    });
+    contactData.intro = getVal("contact-intro-admin");
+    contactData.items = items;
+    mockSet("contact", contactData); toast("✅ Contact saved!");
+};
+
+document.getElementById("saveSocialsBtn").onclick = () => {
+    socialsData.forEach((_, i) => {
+        socialsData[i] = {
+            icon: getVal(`si-icon-${i}`) || socialsData[i].icon,
+            href: getVal(`si-href-${i}`) || socialsData[i].href
+        };
+    });
+    contactData.socials = socialsData;
+    mockSet("contact", contactData); toast("✅ Socials saved!");
+};
+
+document.getElementById("saveFooterBtn").onclick = () => {
+    mockSet("footer", { tagline: getVal("footer-tagline-admin"), copy: getVal("footer-copy-admin") });
+    toast("✅ Footer saved!");
+};

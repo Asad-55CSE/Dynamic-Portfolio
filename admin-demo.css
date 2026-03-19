@@ -585,3 +585,21 @@ body.admin-body-bg {
     margin-bottom: 0;
     flex: 1;
 }
+
+.inline-row {
+    display: flex;
+    gap: .6rem;
+    align-items: flex-end;
+    margin-bottom: .9rem;
+    flex-wrap: wrap;
+    padding: .9rem;
+    background: var(--sf2);
+    border: 1px solid var(--bdr);
+    border-radius: var(--r);
+}
+
+.inline-row .afg {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 120px;
+}
