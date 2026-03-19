@@ -455,3 +455,67 @@ document.getElementById("savePillsBtn").onclick = () => {
     skillsData.pills = pillsData;
     mockSet("skills", skillsData); toast("✅ Pills saved!");
 };
+
+function populateProjects() {
+    const list = document.getElementById("proj-admin-list");
+    list.innerHTML = projectsData.length ? projectsData.map((p, i) => `
+    <div class="sort-item" data-id="${p.id}" data-idx="${i}">
+      <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+      ${p.image ? `<img src="${p.image}" style="width:50px;height:35px;border-radius:var(--rs);object-fit:cover"/>` : ""}
+      <div class="si-info"><strong>${p.title}</strong><span>${p.category} · ${(p.tech || []).slice(0, 3).join(", ")}</span></div>
+      <div class="si-actions">
+        <button class="btn-edit" onclick="editProject('${p.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn-del"  onclick="deleteProject('${p.id}','${p.title.replace(/'/g, "\\'")}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join("") : `<p style="color:var(--tx3);font-size:.85rem;padding:.5rem">No projects yet.</p>`;
+    makeSortable("proj-admin-list");
+}
+
+document.getElementById("saveProjOrderBtn").onclick = () => {
+    const items = [...document.getElementById("proj-admin-list").querySelectorAll(".sort-item")];
+    items.forEach((el, i) => { const id = el.dataset.id; if (id) mockUpdateInColl("projects", id, { order: i }); });
+    projectsData = mockGetColl("projects"); projectsData.sort((a, b) => (a.order || 0) - (b.order || 0));
+    toast("✅ Order saved!");
+};
+
+document.getElementById("saveProjBtn").onclick = () => {
+    const title = getVal("pf-title").trim(); const desc = getVal("pf-desc").trim();
+    if (!title || !desc) { toast("Title & description required", "err"); return; }
+    const data = {
+        title, description: desc, category: getVal("pf-cat"),
+        tech: getVal("pf-tech").split(",").map(t => t.trim()).filter(Boolean),
+        liveLink: getVal("pf-live") || "#", githubLink: getVal("pf-github") || "#",
+        image: getVal("pf-img-url") || "", order: projectsData.length, updatedAt: new Date().toISOString()
+    };
+    const editId = getVal("edit-proj-id");
+    if (editId) mockUpdateInColl("projects", editId, data);
+    else mockAddToColl("projects", data);
+    projectsData = mockGetColl("projects"); projectsData.sort((a, b) => (a.order || 0) - (b.order || 0));
+    populateProjects(); clearProjForm(); toast(editId ? "✅ Updated!" : "✅ Added!");
+};
+
+function clearProjForm() {
+    ["pf-title", "pf-desc", "pf-tech", "pf-live", "pf-github", "pf-img-url", "edit-proj-id"].forEach(id => setVal(id, ""));
+    document.getElementById("pf-cat").value = "web";
+    document.getElementById("pf-img-preview").style.display = "none";
+    document.getElementById("proj-form-title").innerHTML = '<i class="fas fa-plus-circle"></i> Add Project';
+}
+document.getElementById("clearProjBtn").onclick = clearProjForm;
+
+window.editProject = id => {
+    const p = projectsData.find(x => x.id === id); if (!p) return;
+    setVal("edit-proj-id", id); setVal("pf-title", p.title); setVal("pf-desc", p.description);
+    document.getElementById("pf-cat").value = p.category || "web";
+    setVal("pf-tech", (p.tech || []).join(", ")); setVal("pf-live", p.liveLink);
+    setVal("pf-github", p.githubLink); setVal("pf-img-url", p.image);
+    if (p.image) { const prev = document.getElementById("pf-img-preview"); prev.src = p.image; prev.style.display = "block"; }
+    document.getElementById("proj-form-title").innerHTML = '<i class="fas fa-edit"></i> Edit Project';
+    document.getElementById("proj-form-card").scrollIntoView({ behavior: "smooth" });
+};
+
+window.deleteProject = (id, title) => {
+    if (!confirm(`Delete "${title}"?`)) return;
+    mockDeleteFromColl("projects", id);
+    projectsData = projectsData.filter(p => p.id !== id);
+    populateProjects(); toast("🗑️ Deleted");
+};

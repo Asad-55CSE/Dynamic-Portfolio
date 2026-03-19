@@ -228,6 +228,56 @@
 
             </div>
 
+            <div class="tab-content" id="tab-projects">
+
+                <div class="acard">
+                    <h3><i class="fas fa-folder-open"></i> Projects (drag to reorder)</h3>
+                    <div class="sortable-list" id="proj-admin-list"></div>
+                    <div class="btn-row"><button class="btn-p btn-sm" id="saveProjOrderBtn"><i class="fas fa-sort"></i>
+                            Save Order</button></div>
+                </div>
+
+                <div class="acard" id="proj-form-card">
+                    <h3 id="proj-form-title"><i class="fas fa-plus-circle"></i> Add Project</h3>
+                    <input type="hidden" id="edit-proj-id" />
+                    <div class="ag2">
+                        <div class="afg"><label>Title *</label><input type="text" id="pf-title"
+                                placeholder="My Project" /></div>
+                        <div class="afg"><label>Category</label>
+                            <select id="pf-cat">
+                                <option value="web">Web</option>
+                                <option value="desktop">Desktop</option>
+                            </select>
+                        </div>
+                        <div class="afg" style="grid-column:1/-1"><label>Description *</label><textarea id="pf-desc"
+                                rows="3"></textarea></div>
+                        <div class="afg" style="grid-column:1/-1"><label>Tech Stack (comma-separated)</label><input
+                                type="text" id="pf-tech" placeholder="React, Node.js, MongoDB" /></div>
+                        <div class="afg"><label>Live Demo URL</label><input type="url" id="pf-live"
+                                placeholder="https://..." /></div>
+                        <div class="afg"><label>GitHub URL</label><input type="url" id="pf-github"
+                                placeholder="https://github.com/..." /></div>
+                        <div class="afg"><label>Screenshot URL</label><input type="url" id="pf-img-url"
+                                placeholder="https://..." /></div>
+                        <div class="afg">
+                            <label>Upload Screenshot</label>
+                            <div class="upload-area" id="projImgArea">
+                                <i class="fas fa-image"></i>
+                                <p>Click to upload (preview only)</p>
+                                <input type="file" id="projImgFile" accept="image/*" />
+                            </div>
+                            <img id="pf-img-preview" class="img-prev-rect" src=""
+                                style="display:none;margin-top:.5rem" />
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="saveProjBtn"><i class="fas fa-save"></i> Save Project</button>
+                        <button class="btn-o btn-sm" id="clearProjBtn"><i class="fas fa-times"></i> Clear</button>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
     <div class="toast" id="toast"></div>
