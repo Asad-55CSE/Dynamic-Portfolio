@@ -278,6 +278,39 @@
 
             </div>
 
+            <div class="tab-content" id="tab-certs">
+
+                <div class="acard">
+                    <h3><i class="fas fa-award"></i> Certifications &amp; Education</h3>
+                    <p class="section-note">Drag to reorder. Click Edit to modify a cert.</p>
+                    <div class="sortable-list" id="certs-admin-list"></div>
+                    <div class="btn-row"><button class="btn-p btn-sm" id="saveCertsOrderBtn"><i class="fas fa-sort"></i>
+                            Save Order</button></div>
+                </div>
+
+                <div class="acard">
+                    <h3 id="cert-form-title"><i class="fas fa-plus-circle"></i> Add / Edit Cert</h3>
+                    <input type="hidden" id="edit-cert-id" />
+                    <div class="ag2">
+                        <div class="afg"><label>Title *</label><input type="text" id="cf-title"
+                                placeholder="CCNAv7: Introduction to Networks" /></div>
+                        <div class="afg"><label>Issuer</label><input type="text" id="cf-issuer"
+                                placeholder="Cisco Networking Academy" /></div>
+                        <div class="afg" style="grid-column:1/-1"><label>Description</label><textarea id="cf-desc"
+                                rows="2"></textarea></div>
+                        <div class="afg"><label>Date</label><input type="text" id="cf-date" placeholder="Nov 2023" />
+                        </div>
+                        <div class="afg"><label>Icon class</label><input type="text" id="cf-icon"
+                                placeholder="fas fa-network-wired" /></div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="saveCertBtn"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn-o btn-sm" id="clearCertBtn"><i class="fas fa-times"></i> Clear</button>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
     <div class="toast" id="toast"></div>

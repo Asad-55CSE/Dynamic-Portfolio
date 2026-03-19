@@ -519,3 +519,57 @@ window.deleteProject = (id, title) => {
     projectsData = projectsData.filter(p => p.id !== id);
     populateProjects(); toast("🗑️ Deleted");
 };
+
+function populateCerts() {
+    const list = document.getElementById("certs-admin-list");
+    list.innerHTML = certsData.length ? certsData.map((c, i) => `
+    <div class="sort-item" data-id="${c.id || ''}" data-idx="${i}">
+      <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+      <i class="${c.icon}" style="color:var(--p);font-size:1rem;width:20px;flex-shrink:0"></i>
+      <div class="si-info"><strong>${c.title}</strong><span>${c.issuer} · ${c.date}</span></div>
+      <div class="si-actions">
+        <button class="btn-edit" onclick="editCert(${i})"><i class="fas fa-edit"></i></button>
+        <button class="btn-del"  onclick="deleteCert('${c.id || ''}',${i})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join("") : `<p style="color:var(--tx3);font-size:.85rem;padding:.5rem">No certs yet.</p>`;
+    makeSortable("certs-admin-list");
+}
+
+document.getElementById("saveCertsOrderBtn").onclick = () => {
+    const items = [...document.getElementById("certs-admin-list").querySelectorAll(".sort-item")];
+    items.forEach((el, i) => { const id = el.dataset.id; if (id) mockUpdateInColl("certs", id, { order: i }); });
+    certsData = mockGetColl("certs"); certsData.sort((a, b) => (a.order || 0) - (b.order || 0));
+    toast("✅ Order saved!");
+};
+
+document.getElementById("saveCertBtn").onclick = () => {
+    const title = getVal("cf-title").trim(); if (!title) { toast("Title required", "err"); return; }
+    const data = {
+        title, issuer: getVal("cf-issuer"), desc: getVal("cf-desc"),
+        date: getVal("cf-date"), icon: getVal("cf-icon") || "fas fa-award", order: certsData.length
+    };
+    const editId = getVal("edit-cert-id");
+    if (editId) mockUpdateInColl("certs", editId, data);
+    else mockAddToColl("certs", data);
+    certsData = mockGetColl("certs"); certsData.sort((a, b) => (a.order || 0) - (b.order || 0));
+    populateCerts(); clearCertForm(); toast(editId ? "✅ Updated!" : "✅ Added!");
+};
+
+function clearCertForm() {
+    ["cf-title", "cf-issuer", "cf-desc", "cf-date", "cf-icon", "edit-cert-id"].forEach(id => setVal(id, ""));
+    document.getElementById("cert-form-title").innerHTML = '<i class="fas fa-plus-circle"></i> Add / Edit Cert';
+}
+document.getElementById("clearCertBtn").onclick = clearCertForm;
+
+window.editCert = i => {
+    const c = certsData[i];
+    setVal("edit-cert-id", c.id || ""); setVal("cf-title", c.title); setVal("cf-issuer", c.issuer);
+    setVal("cf-desc", c.desc); setVal("cf-date", c.date); setVal("cf-icon", c.icon);
+    document.getElementById("cert-form-title").innerHTML = '<i class="fas fa-edit"></i> Edit Cert';
+};
+window.deleteCert = (id, i) => {
+    if (!confirm("Delete this cert?")) return;
+    if (id) mockDeleteFromColl("certs", id);
+    certsData.splice(i, 1);
+    populateCerts(); toast("🗑️ Deleted");
+};
