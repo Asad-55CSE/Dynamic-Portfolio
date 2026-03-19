@@ -139,6 +139,49 @@
 
             </div>
 
+            <div class="tab-content" id="tab-about">
+
+                <div class="acard">
+                    <h3><i class="fas fa-pen"></i> Bio Text</h3>
+                    <div class="afg"><label>Bio / Description</label><textarea id="about-bio" rows="4"></textarea></div>
+                    <div class="btn-row"><button class="btn-p btn-sm" id="saveBioBtn"><i class="fas fa-save"></i> Save
+                            Bio</button></div>
+                </div>
+
+                <div class="acard">
+                    <h3><i class="fas fa-th-large"></i> Specialization Cards</h3>
+                    <div class="sortable-list" id="about-cards-list"></div>
+                    <hr style="margin:1rem 0;border:none;border-top:1px solid var(--bdr)" />
+                    <p class="section-note">Add or edit a card below. Use FontAwesome class for the icon.</p>
+                    <input type="hidden" id="edit-card-idx" value="" />
+                    <div class="ag2">
+                        <div class="afg"><label>Title</label><input type="text" id="card-title"
+                                placeholder="Web Development" /></div>
+                        <div class="afg"><label>Icon class</label><input type="text" id="card-icon"
+                                placeholder="fab fa-react" /></div>
+                        <div class="afg" style="grid-column:1/-1"><label>Description</label><textarea id="card-desc"
+                                rows="2"></textarea></div>
+                        <div class="afg"><label>Photo URL (optional)</label><input type="url" id="card-photo-url"
+                                placeholder="https://..." /></div>
+                        <div class="afg">
+                            <label>Upload Photo</label>
+                            <div class="upload-area" id="cardPhotoArea">
+                                <i class="fas fa-image"></i>
+                                <p>Click to upload (preview only)</p>
+                                <input type="file" id="cardPhotoFile" accept="image/*" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn-p btn-sm" id="saveCardBtn"><i class="fas fa-save"></i> Save Card</button>
+                        <button class="btn-o btn-sm" id="clearCardBtn"><i class="fas fa-times"></i> Clear</button>
+                        <button class="btn-p btn-sm" id="saveAboutOrderBtn"><i class="fas fa-sort"></i> Save
+                            Order</button>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
     <div class="toast" id="toast"></div>

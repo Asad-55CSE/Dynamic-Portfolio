@@ -276,3 +276,53 @@ document.getElementById("saveHeroPhotoBtn").onclick = () => {
   heroData.profilePhoto = getVal("h-photo-url");
   mockSet("hero", heroData); toast("✅ Photo saved!");
 };
+
+function populateAbout() { setVal("about-bio", aboutData.bio || ""); renderAboutCardsList(); }
+
+function renderAboutCardsList() {
+  const cards = aboutData.cards || [];
+  const list  = document.getElementById("about-cards-list");
+  list.innerHTML = cards.length ? cards.map((c, i) => `
+    <div class="sort-item" data-idx="${i}">
+      <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+      ${c.photo
+        ? `<img src="${c.photo}" style="width:40px;height:30px;border-radius:var(--rs);object-fit:cover"/>`
+        : `<i class="${c.icon || 'fas fa-code'}" style="color:var(--p);font-size:1rem;width:20px;flex-shrink:0"></i>`}
+      <div class="si-info"><strong>${c.title}</strong><span>${(c.desc || "").substring(0, 45)}…</span></div>
+      <div class="si-actions">
+        <button class="btn-edit" onclick="editAboutCard(${i})"><i class="fas fa-edit"></i></button>
+        <button class="btn-del"  onclick="deleteAboutCard(${i})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join("") : `<p style="color:var(--tx3);font-size:.85rem;padding:.5rem">No cards yet.</p>`;
+  makeSortable("about-cards-list");
+}
+
+window.editAboutCard = i => {
+  const c = aboutData.cards[i];
+  document.getElementById("edit-card-idx").value = i;
+  setVal("card-title", c.title); setVal("card-icon", c.icon); setVal("card-desc", c.desc); setVal("card-photo-url", c.photo || "");
+};
+window.deleteAboutCard = i => { aboutData.cards.splice(i, 1); renderAboutCardsList(); };
+
+document.getElementById("saveCardBtn").onclick = () => {
+  const idx  = getVal("edit-card-idx");
+  const card = {
+    title: getVal("card-title").trim(), icon: getVal("card-icon").trim() || "fas fa-code",
+    desc:  getVal("card-desc").trim(),  photo: getVal("card-photo-url").trim()
+  };
+  if (!card.title) { toast("Enter title", "err"); return; }
+  if (!aboutData.cards) aboutData.cards = [];
+  if (idx !== "") aboutData.cards[parseInt(idx)] = card; else aboutData.cards.push(card);
+  mockSet("about", aboutData); renderAboutCardsList(); clearAboutCard(); toast("✅ Card saved!");
+};
+function clearAboutCard() {
+  document.getElementById("edit-card-idx").value = "";
+  ["card-title", "card-icon", "card-desc", "card-photo-url"].forEach(id => setVal(id, ""));
+}
+document.getElementById("clearCardBtn").onclick     = clearAboutCard;
+document.getElementById("saveBioBtn").onclick        = () => { aboutData.bio = getVal("about-bio"); mockSet("about", aboutData); toast("✅ Bio saved!"); };
+document.getElementById("saveAboutOrderBtn").onclick = () => {
+  const items = [...document.getElementById("about-cards-list").querySelectorAll(".sort-item")];
+  aboutData.cards = items.map(el => aboutData.cards[parseInt(el.dataset.idx)]).filter(Boolean);
+  mockSet("about", aboutData); renderAboutCardsList(); toast("✅ Order saved!");
+};
