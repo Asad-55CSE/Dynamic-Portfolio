@@ -126,3 +126,72 @@ function mockUpdateInColl(name, id, data) {
 function mockDeleteFromColl(name, id) {
   mockSaveColl(name, mockGetColl(name).filter(x => x.id !== id));
 }
+
+function bindUpload(areaId, fileId, previewId, urlId) {
+  const area   = document.getElementById(areaId);
+  const fileIn = document.getElementById(fileId);
+  if (!area || !fileIn) return;
+  area.onclick = () => fileIn.click();
+  fileIn.onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    toast("📁 Preview loaded (demo — not uploaded to server)", "info");
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const dataUrl = ev.target.result;
+      if (urlId)     document.getElementById(urlId).value = dataUrl;
+      if (previewId) { const p = document.getElementById(previewId); p.src = dataUrl; p.style.display = "block"; }
+    };
+    reader.readAsDataURL(file);
+  };
+  if (urlId) document.getElementById(urlId).oninput = e => {
+    if (previewId) {
+      const p = document.getElementById(previewId);
+      p.src = e.target.value;
+      p.style.display = e.target.value ? "block" : "none";
+    }
+  };
+}
+bindUpload("profilePhotoArea", "profilePhotoFile", "h-photo-preview", "h-photo-url");
+bindUpload("cardPhotoArea",    "cardPhotoFile",    null,              "card-photo-url");
+bindUpload("projImgArea",      "projImgFile",      "pf-img-preview",  "pf-img-url");
+
+let dragSrc = null;
+function makeSortable(listId) {
+  const list = document.getElementById(listId); if (!list) return;
+  list.querySelectorAll(".sort-item").forEach(item => {
+    item.draggable   = true;
+    item.ondragstart = e  => { dragSrc = item; item.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; };
+    item.ondragend   = () => { dragSrc = null; item.classList.remove("dragging"); list.querySelectorAll(".sort-item").forEach(i => i.classList.remove("drag-over")); };
+    item.ondragover  = e  => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (item !== dragSrc) item.classList.add("drag-over"); };
+    item.ondragleave = () => item.classList.remove("drag-over");
+    item.ondrop      = e  => {
+      e.preventDefault(); item.classList.remove("drag-over");
+      if (dragSrc && item !== dragSrc) {
+        const items = [...list.querySelectorAll(".sort-item")];
+        if (items.indexOf(dragSrc) < items.indexOf(item)) item.after(dragSrc);
+        else item.before(dragSrc);
+      }
+    };
+  });
+}
+
+let heroData     = {}, aboutData = { cards: [] }, skillsData = { bars: [], pills: [], tags: [] };
+let badgesData   = [], statsData = [], pillsData = [], socialsData = [];
+let projectsData = [], certsData = [], contactData = { items: [], socials: [] };
+
+function setVal(id, v) { const el = document.getElementById(id); if (el && v !== undefined) el.value = v; }
+function getVal(id)    { const el = document.getElementById(id); return el ? el.value : ""; }
+
+function loadAll() {
+  heroData    = mockGet("hero");
+  aboutData   = mockGet("about");
+  skillsData  = mockGet("skills");
+  contactData = mockGet("contact");
+  const footer = mockGet("footer");
+  setVal("footer-tagline-admin", footer.tagline || "");
+  setVal("footer-copy-admin",    footer.copy    || "");
+  projectsData = mockGetColl("projects"); projectsData.sort((a, b) => (a.order || 0) - (b.order || 0));
+  certsData    = mockGetColl("certs");    certsData.sort((a, b)    => (a.order || 0) - (b.order || 0));
+  populateHero(); populateAbout(); populateSkills();
+  populateProjects(); populateCerts(); populateContact();
+}
